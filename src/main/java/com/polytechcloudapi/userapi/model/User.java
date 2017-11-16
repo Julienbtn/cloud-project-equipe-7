@@ -2,7 +2,10 @@ package com.polytechcloudapi.userapi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.polytechcloudapi.userapi.util.DateDeserialize;
+import com.polytechcloudapi.userapi.util.PositionDeseializer;
+import com.polytechcloudapi.userapi.util.PositionSeializer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -24,7 +27,9 @@ public class User {
     @JsonDeserialize(using=DateDeserialize.class)
     private Date birthDay;
 
-    private Position position;
+    @JsonSerialize(using= PositionSeializer.class)
+    @JsonDeserialize(using=PositionDeseializer.class)
+    private double[] position;
 
     public String getId() {
         return id;
@@ -58,11 +63,11 @@ public class User {
         this.birthDay = birthDay;
     }
 
-    public Position getPosition() {
+    public double[] getPosition() {
         return position;
     }
 
-    public void setPosition(Position position) {
+    public void setPosition(double[] position) {
         this.position = position;
     }
 }

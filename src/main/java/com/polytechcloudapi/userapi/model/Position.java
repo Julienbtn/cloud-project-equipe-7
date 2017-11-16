@@ -23,4 +23,9 @@ public class Position {
     public void setLon(double lon) {
         this.lon = lon;
     }
+
+    public Position(double lat, double lon) {
+        this.lat = lat;
+        this.lon = lon;
+    }
 }
