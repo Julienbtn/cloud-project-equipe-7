@@ -15,4 +15,7 @@ public interface UserRepository extends MongoRepository<User, String> {
     List<User> findAll();
 
     List<User> findByPositionNear(Point location);
+
+    List<User> findAllByOrderByLastNameDesc();
+
 }

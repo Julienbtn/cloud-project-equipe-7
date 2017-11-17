@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping("")
     public List<User> getAll() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderByLastNameDesc();
     }
 
     @GetMapping("/{id}")
