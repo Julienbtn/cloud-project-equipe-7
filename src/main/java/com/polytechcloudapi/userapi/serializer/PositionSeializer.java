@@ -1,4 +1,4 @@
-package com.polytechcloudapi.userapi.util;
+package com.polytechcloudapi.userapi.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;

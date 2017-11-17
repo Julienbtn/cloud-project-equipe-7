@@ -1,4 +1,4 @@
-package com.polytechcloudapi.userapi.util;
+package com.polytechcloudapi.userapi.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,7 +13,7 @@ import java.io.IOException;
  * Created by JOYMANGUL Jensen Selwyn
  * on 16-Nov-17.
  */
-public class PositionDeseializer extends JsonDeserializer<double[]> {
+public class PositionDeserializer extends JsonDeserializer<double[]> {
     @Override
     public double[] deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
         ObjectCodec oc = jsonParser.getCodec();

@@ -1,4 +1,4 @@
-package com.polytechcloudapi.userapi.util;
+package com.polytechcloudapi.userapi.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -14,7 +14,7 @@ import java.util.TimeZone;
  * Created by JOYMANGUL Jensen Selwyn
  * on 14-Nov-17.
  */
-public class DateDeserialize extends JsonDeserializer<Date> {
+public class DateDeserializer extends JsonDeserializer<Date> {
     private SimpleDateFormat dateFormat = new SimpleDateFormat(
             "MM/dd/yyyy");
 
