@@ -43,7 +43,6 @@ public class UserController {
     @PostMapping("")
     public ResponseEntity create(@RequestBody @Valid User user) {
         User result = userRepository.save(user);
-        System.out.println(user.getId());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                                 .buildAndExpand(result.getId()).toUri();
         return ResponseEntity.created(location).body(user);
@@ -86,7 +85,7 @@ public class UserController {
     public ResponseEntity<Object> delete(@PathVariable(value = "id") String userId) {
         User user = userRepository.findOne(userId);
         if(user == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.notFound().build();
         }
         userRepository.delete(user);
         return ResponseEntity.ok().build();
