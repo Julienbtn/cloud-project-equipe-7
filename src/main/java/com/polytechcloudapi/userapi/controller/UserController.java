@@ -11,6 +11,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +44,26 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(user);
+    }
+
+    @GetMapping("/age")
+    public List<User> getByAgeGreaterThan(@RequestParam(name = "gt", required = false) String gt,
+                                          @RequestParam(name = "eq", required = false) String eq) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        if (gt != null) {
+            cal.add(Calendar.YEAR, -Integer.valueOf(gt));
+            Date birthday = cal.getTime();
+            return userRepository.findByBirthDayBefore(birthday, new PageRequest(Integer.valueOf(DEFAULT_PAGE_NUMBER), MAX_PAGE_SIZE));
+        }
+        else{
+            cal.add(Calendar.YEAR, -Integer.valueOf(eq));
+            Date endDate = cal.getTime();
+            cal.setTime(endDate);
+            cal.set(Calendar.DAY_OF_YEAR, 1);
+            Date startDate = cal.getTime();
+            return userRepository.findByBirthDayBetween(startDate, endDate, new PageRequest(Integer.valueOf(DEFAULT_PAGE_NUMBER), MAX_PAGE_SIZE));
+        }
     }
 
     @PostMapping("")
