@@ -1,6 +1,7 @@
 package com.polytechcloudapi.userapi.repository;
 
 import com.polytechcloudapi.userapi.model.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -16,6 +17,6 @@ public interface UserRepository extends MongoRepository<User, String> {
 
     List<User> findByPositionNear(Point location);
 
-    List<User> findAllByOrderByLastNameDesc();
+    List<User> findAllByOrderByLastNameDesc(Pageable pageable);
 
 }

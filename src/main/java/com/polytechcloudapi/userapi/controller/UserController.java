@@ -3,6 +3,7 @@ package com.polytechcloudapi.userapi.controller;
 import com.polytechcloudapi.userapi.model.User;
 import com.polytechcloudapi.userapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    final UserRepository userRepository;
+    private final int MAX_PAGE_SIZE = 100;
+    private final String DEFAULT_PAGE_NUMBER = "0";
+
+    private final UserRepository userRepository;
 
     @Autowired
     public UserController(UserRepository userRepository) {
@@ -27,8 +31,8 @@ public class UserController {
     }
 
     @GetMapping("")
-    public List<User> getAll() {
-        return userRepository.findAllByOrderByLastNameDesc();
+    public List<User> getAll(@RequestParam(value = "page",  defaultValue = DEFAULT_PAGE_NUMBER) int page) {
+        return userRepository.findAllByOrderByLastNameDesc(new PageRequest(page, MAX_PAGE_SIZE));
     }
 
     @GetMapping("/{id}")
