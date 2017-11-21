@@ -7,6 +7,7 @@ import com.polytechcloudapi.userapi.deserializer.DateDeserializer;
 import com.polytechcloudapi.userapi.deserializer.PositionDeserializer;
 import com.polytechcloudapi.userapi.serializer.PositionSeializer;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -27,6 +28,7 @@ public class User {
     @JsonDeserialize(using=DateDeserializer.class)
     private Date birthDay;
 
+    @GeoSpatialIndexed
     @JsonSerialize(using= PositionSeializer.class)
     @JsonDeserialize(using=PositionDeserializer.class)
     private double[] position;

@@ -16,12 +16,14 @@ public interface UserRepository extends MongoRepository<User, String> {
     @Override
     List<User> findAll();
 
-    List<User> findByPositionNear(Point location);
+    List<User> findByPositionNear(Point location, Pageable pageable);
 
     List<User> findAllByOrderByLastNameDesc(Pageable pageable);
 
     List<User> findByBirthDayBefore(Date date, Pageable pageable);
 
     List<User> findByBirthDayBetween(Date startDate, Date endDate, Pageable pageable);
+
+    List<User> findByLastNameLike(String searchName,  Pageable pageable);
 
 }
