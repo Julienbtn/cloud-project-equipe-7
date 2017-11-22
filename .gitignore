@@ -87,4 +87,4 @@ crashlytics-build.properties
 fabric.properties
 .idea/
 /.idea/
-/src/main/resources/application.properties
+target (1)/
