@@ -43,7 +43,6 @@ public class UserController {
     @PostMapping("")
     public ResponseEntity create(@RequestBody @Valid User user) {
         User result = userRepository.save(user);
-        System.out.println(user.getId());
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                                 .buildAndExpand(result.getId()).toUri();
         return ResponseEntity.created(location).body(user);
