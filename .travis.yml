@@ -4,3 +4,8 @@ install:
 
 script:
  - mvn test
+
+after_success:
+ - docker build -t julienbtn/java-image .
+ - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+ - docker push "$DOCKER_USERNAME"/cloud-java;
