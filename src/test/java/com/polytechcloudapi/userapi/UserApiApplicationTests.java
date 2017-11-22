@@ -10,28 +10,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.geo.Point;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest()
 public class UserApiApplicationTests {
     @Mock
     private UserRepository userRepository;
@@ -49,19 +43,18 @@ public class UserApiApplicationTests {
 
         user = new User();
         user.setId("toto");
-        user.setFirstName("first");
         user.setlastName("last");
-        user.setBirthDay(new Date("05/05/205"));
+        user.setFirstName("first");
+        user.setBirthDay(new Date("05/05/2015"));
         user.setPosition(position);
 
-		MockitoAnnotations.initMocks(this);
+		//MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
 	}
 
 
     @Test
     public void test_get_all_empty() throws Exception {
-        //when(userRepository.findAll()).thenReturn(Collections.emptyList());
         mockMvc.perform(MockMvcRequestBuilders.get("/user"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("[]"));
@@ -69,27 +62,27 @@ public class UserApiApplicationTests {
 
     @Test
     public void test_get_one_empty() throws Exception {
-        when(userRepository.findOne("toto")).thenReturn(null);
 		mockMvc.perform(MockMvcRequestBuilders.get("/user/toto"))
 				.andExpect(status().isNotFound());
     }
 
-    /*
+
     @Test
     public void test_get_one_ok() throws Exception {
 
-        when(userRepository.findOne("2s0c11c0c9802ahdkea383jm")).thenReturn(user);
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/2s0c11c0c9802ahdkea383jm"))
+        when(this.userRepository.findOne("toto")).thenReturn(user);
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/toto"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("{" +
-                        "\"id\":\"2s0c11c0c9802ahdkea383jm\"," +
-                        "\"lastName\":\"last\"," +
+                        "\"id\":\"toto\"," +
                         "\"firstName\":\"first\"," +
-                        "\"birthDay\":\"05/05/2005c\"," +
+                        "\"lastName\":\"last\"," +
+                        "\"birthDay\":\"05/05/2015\"," +
                         "\"position\":{\"lat\":67.2,\"lon\":24.9}" +
                         "}"));
+        verify(userRepository).findOne(anyString());
     }
-    */
+
 
     @Test
     public void test_put_one_not_found() throws Exception {
@@ -98,16 +91,22 @@ public class UserApiApplicationTests {
                 .contentType("application/json")
                 .content(new ObjectMapper().writeValueAsString(user)))
                 .andExpect(status().isNotFound());
+        verify(userRepository).findOne(anyString());
     }
 
     /*
     @Test
     public void test_put_one_ok() throws Exception {
         when(userRepository.findOne("toto")).thenReturn(user);
-        mockMvc.perform(MockMvcRequestBuilders.put("/user/toto")
-                .contentType("application/json")
-                .content(new ObjectMapper().writeValueAsString(user)))
-                .andExpect(status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/toto").contentType("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{" +
+                        "\"id\":\"toto\"," +
+                        "\"firstName\":\"first\"," +
+                        "\"lastName\":\"last\"," +
+                        "\"birthDay\":\"05/05/2015\"," +
+                        "\"position\":{\"lat\":67.2,\"lon\":24.9}" +
+                        "}"));
     }
     */
 
@@ -119,8 +118,9 @@ public class UserApiApplicationTests {
 
     @Test
     public void test_delete_one_not_found() throws Exception {
-        when(userRepository.findOne("toto")).thenReturn(null);
+        //when(userRepository.findOne("toto")).thenReturn(null);
         mockMvc.perform(MockMvcRequestBuilders.put("/user/toto"))
                 .andExpect(status().is(400));
+        //verify(userRepository).findOne(anyString());
     }
 }

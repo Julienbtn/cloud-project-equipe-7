@@ -3,7 +3,6 @@ package com.polytechcloudapi.userapi.controller;
 import com.polytechcloudapi.userapi.model.User;
 import com.polytechcloudapi.userapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,6 +34,7 @@ public class UserController {
     public ResponseEntity getById(@PathVariable(value = "id") String userId) {
         User user = userRepository.findOne(userId);
         if(user == null) {
+            System.out.println(userId);System.out.println(userId);
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(user);
