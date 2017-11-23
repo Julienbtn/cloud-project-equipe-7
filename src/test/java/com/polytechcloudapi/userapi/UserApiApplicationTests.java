@@ -2,7 +2,6 @@ package com.polytechcloudapi.userapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.polytechcloudapi.userapi.controller.UserController;
-import com.polytechcloudapi.userapi.model.Position;
 import com.polytechcloudapi.userapi.model.User;
 import com.polytechcloudapi.userapi.repository.UserRepository;
 import org.junit.Before;
@@ -12,8 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -22,8 +19,6 @@ import java.util.Date;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
-import java.util.Collections;
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,9 +36,9 @@ public class UserApiApplicationTests {
     private User user;
 	@Before
 	public void setUp() throws Exception {
-        Position position = new Position();
-        position.setLat(67.2);
-        position.setLon(24.9);
+        double[] position = new double[2];
+        position[0] = 67.2;
+        position[1] = 24.9;
 
         user = new User();
         user.setId("toto");
