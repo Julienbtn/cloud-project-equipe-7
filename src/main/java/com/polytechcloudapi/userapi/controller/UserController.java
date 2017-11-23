@@ -35,11 +35,13 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    /***************************************************  GET  ***************************************************/
+
     @GetMapping("")
-    public List<User> getAll(@RequestParam(name = "page",  defaultValue = DEFAULT_PAGE_NUMBER) int page) {
-        if(page <0)
-            page = Integer.valueOf(DEFAULT_PAGE_NUMBER);
-        return userRepository.findAllByOrderByLastNameDesc(new PageRequest(page, MAX_PAGE_SIZE));
+    public List<User> getAll(@RequestParam(name = "page", required = false) Optional<Integer> page) {
+        if(!page.isPresent())
+            page = Optional.of(0);
+        return userRepository.findAllByOrderByLastNameDesc(new PageRequest(page.get(), MAX_PAGE_SIZE));
     }
 
     @GetMapping("/{id}")
@@ -85,6 +87,8 @@ public class UserController {
         return userRepository.findByPositionNear(new Point(lat, lon), new PageRequest(page, NUMBER_NEAREST_USER));
     }
 
+    /***************************************************  POST  ***************************************************/
+
     @PostMapping("")
     public ResponseEntity create(@RequestBody @Valid User user) {
         User result = userRepository.save(user);
@@ -92,6 +96,8 @@ public class UserController {
                                 .buildAndExpand(result.getId()).toUri();
         return ResponseEntity.created(location).body(user);
     }
+
+    /***************************************************  PUT  ***************************************************/
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") String userId,
@@ -106,11 +112,8 @@ public class UserController {
         user.setPosition(UserDetails.getPosition());
 
         User updatedUser = userRepository.save(user);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(updatedUser.getId()).toUri();
         return ResponseEntity.ok(updatedUser);
     }
-
 
     @PutMapping("")
     public ResponseEntity addList(@RequestBody @Valid List<User> users) {
@@ -119,6 +122,8 @@ public class UserController {
         URI location = ServletUriComponentsBuilder.fromCurrentRequestUri().build().toUri();
         return ResponseEntity.created(location).body(createdUsers);
     }
+
+    /***************************************************  DELETE  ***************************************************/
 
     @DeleteMapping("")
     public ResponseEntity deleteAll() {
