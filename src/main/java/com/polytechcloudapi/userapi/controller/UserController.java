@@ -24,9 +24,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private final int MAX_PAGE_SIZE = 100;
-    private final String DEFAULT_PAGE_NUMBER = "0";
-    private final int NUMBER_NEAREST_USER = 10 ;
+    private static final int MAX_PAGE_SIZE = 100;
+    private static final String DEFAULT_PAGE_NUMBER = "0";
+    private static final int NUMBER_NEAREST_USER = 10 ;
 
     private final UserRepository userRepository;
 
@@ -54,23 +54,25 @@ public class UserController {
     }
 
     @GetMapping("/age")
-    public List<User> getByAgeGreaterThan(@RequestParam(name = "gt", required = false) Optional<Integer> gt,
+    public ResponseEntity getByAgeGreaterThan(@RequestParam(name = "gt", required = false) Optional<Integer> gt,
                                           @RequestParam(name = "eq", required = false) Optional<Integer>  eq,
                                           @RequestParam(name = "page",  defaultValue = DEFAULT_PAGE_NUMBER) int page) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
-        if (gt.isPresent()) {
+        if (gt.isPresent() && gt.get() > 0 ) {
             cal.add(Calendar.YEAR, -gt.get());
             Date birthday = cal.getTime();
-            return userRepository.findByBirthDayBefore(birthday, new PageRequest(page, MAX_PAGE_SIZE));
+            return ResponseEntity.ok(userRepository.findByBirthDayBefore(birthday, new PageRequest(page, MAX_PAGE_SIZE)));
         }
-        else {
+        else if (eq.isPresent() && eq.get() > 0 ){
             cal.add(Calendar.YEAR, -eq.get());
             Date endDate = cal.getTime();
             cal.setTime(endDate);
             cal.set(Calendar.DAY_OF_YEAR, 1);
             Date startDate = cal.getTime();
-            return userRepository.findByBirthDayBetween(startDate, endDate, new PageRequest(Integer.valueOf(DEFAULT_PAGE_NUMBER), MAX_PAGE_SIZE));
+            return ResponseEntity.ok(userRepository.findByBirthDayBetween(startDate, endDate, new PageRequest(Integer.valueOf(DEFAULT_PAGE_NUMBER), MAX_PAGE_SIZE)));
+        } else {
+            return ResponseEntity.badRequest().build();
         }
     }
 
