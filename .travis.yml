@@ -8,11 +8,10 @@ services:
 script:
  - mvn package
 
-after_success:
- echo "$TRAVIS_BRANCH";
- - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker build -t "$DOCKER_USERNAME"/cloud-java .;
-    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker push "$DOCKER_USERNAME"/cloud-java;
-    echo "Docker images created";
-    fi
+ after_success:
+ - if [[ $TRAVIS_BRANCH == "master" ]]; then
+   docker build -t "$DOCKER_USERNAME"/cloud-java .;
+   docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+   docker push "$DOCKER_USERNAME"/cloud-java;
+   fi 
+
