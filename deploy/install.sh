@@ -30,4 +30,11 @@ docker-compose -v
 
 # Download the docker-compose.yml
 wget https://raw.githubusercontent.com/PolytechLyon/cloud-project-equipe-7/feature/docker/deploy/docker-compose.yml
+
+# Delete previous containers and images
+docker rm -f mongodb
+docker rm -f cloud-java
+
+docker rmi julienbtn/cloud-java
+
 docker-compose up
