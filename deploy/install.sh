@@ -40,4 +40,9 @@ docker rm -f cloud-java
 docker rmi julienbtn/cloud-java
 
 docker-compose up -d
-curl http://localhost:80/user
+
+echo Waiting for the application to start...
+sleep 15  # Waits 5 seconds.
+
+HTTP_STATUS="$(curl -IL --silent http://localhost:80/user | grep HTTP )";
+echo "${HTTP_STATUS}";
