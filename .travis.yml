@@ -14,3 +14,10 @@ after_success:
  docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
  docker push "$DOCKER_USERNAME"/cloud-java;
  fi
+ 
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker build -t "$DOCKER_USERNAME"/cloud-java .;
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push "$DOCKER_USERNAME"/cloud-java;
+    echo "Docker images created"
+    fi
