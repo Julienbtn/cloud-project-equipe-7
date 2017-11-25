@@ -31,7 +31,7 @@ docker-compose -v
 
 # Download the docker-compose.yml
 sudo rm -f docker-compose.yml
-wget https://raw.githubusercontent.com/PolytechLyon/cloud-project-equipe-7/feature/docker/deploy/docker-compose.yml
+wget https://raw.githubusercontent.com/PolytechLyon/cloud-project-equipe-7/master/deploy/docker-compose.yml
 
 # Delete previous containers and images
 docker rm -f mongodb
