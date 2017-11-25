@@ -1,6 +1,16 @@
 language: java
 install:
-- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+ - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+services:
+ - mongodb
 
 script:
- - mvn test
+ - mvn package
+
+after_success:
+- if [ "$TRAVIS_BRANCH" == "master" ]; then
+ - docker build -t "$DOCKER_USERNAME"/cloud-java .
+ - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+ - docker push "$DOCKER_USERNAME"/cloud-java;
+ fi

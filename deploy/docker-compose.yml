@@ -1,0 +1,19 @@
+version: '2'
+services:
+  mongodb:
+    container_name: "mongodb"
+    image: mongo
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - 27017:27017
+
+  cloud-java:
+    container_name: "cloud-java"
+    depends_on:
+      - mongodb
+    image: julienbtn/cloud-java
+    links:
+      - mongodb
+    ports:
+      - 80:8080
