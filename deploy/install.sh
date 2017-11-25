@@ -42,10 +42,10 @@ docker rmi julienbtn/cloud-java
 docker-compose up -d
 
 echo Waiting for the application to start
-sleep 5  # Waits 5 seconds.
+sleep 15  # Waits 15 seconds.
 
 HTTP_STATUS="$(curl -IL --silent http://localhost:80/user | grep HTTP )";
-echo "${HTTP_STATUS}";
+echo "${HTTP_STATUS}"
 
 # Remove docker-compose.yml file
 sudo rm -f docker-compose.yml
