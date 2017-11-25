@@ -41,13 +41,12 @@ docker rmi julienbtn/cloud-java
 # Create the different containers in detach mode
 docker-compose up -d
 
-# Tests id application started properly
 echo Waiting for the application to start...
 sleep 15  # Waits 15 seconds.
 
-HTTP_STATUS="$(curl -IL --silent http://localhost:80/user | grep HTTP )";
-
-if [ "${HTTP_STATUS}" = "HTTP/1.1 200" ]
+curl -o - -s -w "%{http_code}\n" http://localhost:80/user ;
+echo  "${http_code}"
+if [ "${http_code}" = "200" ]
 then
     echo "Application starts"
 else
