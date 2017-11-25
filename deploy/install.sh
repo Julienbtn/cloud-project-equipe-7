@@ -36,19 +36,16 @@ wget https://raw.githubusercontent.com/PolytechLyon/cloud-project-equipe-7/featu
 # Delete previous containers and images
 docker rm -f mongodb
 docker rm -f cloud-java
+
 docker rmi julienbtn/cloud-java
 
-# Create the different containers in detach mode
 docker-compose up -d
 
-echo Waiting for the application to start...
-sleep 15  # Waits 15 seconds.
+echo Waiting for the application to start
+sleep 5  # Waits 5 seconds.
 
-curl -o - -s -w "%{http_code}\n" http://localhost:80/user ;
-echo  "${http_code}"
-if [ "${http_code}" = "200" ]
-then
-    echo "Application starts"
-else
-    echo "Application failed to start:("
-fi
+HTTP_STATUS="$(curl -IL --silent http://localhost:80/user | grep HTTP )";
+echo "${HTTP_STATUS}";
+
+# Remove docker-compose.yml file
+sudo rm -f docker-compose.yml
