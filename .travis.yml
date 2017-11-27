@@ -7,13 +7,6 @@ services:
 
 script:
  - mvn package
- 
-deploy:
- # deploy master to production
- - provider: script
-   script: deploy/install.sh
-   on:
-     branch: master
 
 after_success:
  - if [[ $TRAVIS_BRANCH == "master" ]]; then
