@@ -7,11 +7,25 @@ services:
 
 script:
  - mvn package
+ 
+deploy:
+ # deploy master to production
+ - provider: script
+   script: deploy/install.sh
+   on:
+     branch: master
 
 after_success:
  - if [[ $TRAVIS_BRANCH == "master" ]]; then
    docker build -t "$DOCKER_USERNAME"/cloud-java .;
    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
    docker push "$DOCKER_USERNAME"/cloud-java;
-   fi 
+   fi
+ 
+ - eval "$(ssh-agent -s)" # Start the ssh agent
+ - echo "$DEPLOY_KEY" > deploy_key.pem
+ - chmod 600 deploy_key.pem # This key should have push access
+ - ssh-add deploy_key.pem
+ - git remote add deploy $REPO_URI
+ - git push deploy master
 
