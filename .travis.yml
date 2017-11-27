@@ -21,11 +21,3 @@ after_success:
    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
    docker push "$DOCKER_USERNAME"/cloud-java;
    fi
- 
- - eval "$(ssh-agent -s)" # Start the ssh agent
- - echo "$DEPLOY_KEY" > deploy_key.pem
- - chmod 600 deploy_key.pem # This key should have push access
- - ssh-add deploy_key.pem
- - git remote add deploy $REPO_URI
- - git push deploy master
-
